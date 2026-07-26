@@ -61,16 +61,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function openModal(report) {
     modalTag.textContent = report.tag || report.time;
     modalTitle.textContent = report.title;
+
+    let modalHTML = '';
+
+    // 図解画像が存在する場合は表示
+    if (report.image) {
+      modalHTML += `
+        <div style="margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 1px solid rgba(168,85,247,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+          <img src="${escapeHTML(report.image)}" alt="図解インフォグラフィック" style="width: 100%; display: block; border-radius: 12px;">
+        </div>
+      `;
+    }
     
     // 市場データ表の構築
     if (report.marketData && report.marketData.length > 0) {
-      let tableHTML = `
+      modalHTML += `
         <h4 style="color:#FFF; margin-bottom: 0.5rem; font-size: 1rem;">■ 主要市場データ</h4>
         <table class="data-table">
           <thead>
             <tr>
               <th>銘柄・指標</th>
-              <th>終値 / 現在値</th>
+              <th>最新確定値</th>
               <th>前日比</th>
               <th>騰落率 / 変化</th>
             </tr>
@@ -80,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       report.marketData.forEach(item => {
         const statusClass = item.status === 'up' ? 'up' : (item.status === 'down' ? 'down' : '');
-        tableHTML += `
+        modalHTML += `
           <tr>
             <td style="color:#FFF; font-weight:600;">${escapeHTML(item.name)}</td>
             <td>${escapeHTML(item.close)}</td>
@@ -90,11 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       });
 
-      tableHTML += `</tbody></table>`;
-      modalMarketData.innerHTML = tableHTML;
-    } else {
-      modalMarketData.innerHTML = '';
+      modalHTML += `</tbody></table>`;
     }
+
+    modalMarketData.innerHTML = modalHTML;
 
     // 本文フォーマット
     modalFullText.innerHTML = formatMarkdown(report.fullText || report.summary);
@@ -142,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderReports(filtered);
   });
 
-  // エスケープHTML
   function escapeHTML(str) {
     if (!str) return '';
     return str.replace(/[&<>"']/g, match => ({
@@ -154,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }[match]));
   }
 
-  // 簡易マークダウン風フォーマット
   function formatMarkdown(text) {
     if (!text) return '';
     let html = escapeHTML(text);
