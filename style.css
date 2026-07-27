@@ -1,17 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
 :root {
-  --bg-dark: #0A0E1A;
-  --bg-card: rgba(19, 27, 46, 0.9);
-  --bg-card-hover: rgba(30, 41, 69, 0.95);
+  --bg-dark: #070A12;
+  --bg-card: #0F172A;
+  --bg-panel: #141E33;
   --border-color: rgba(255, 255, 255, 0.12);
   --accent-purple: #A855F7;
   --accent-blue: #3B82F6;
   --accent-green: #10B981;
   --accent-red: #EF4444;
+  --accent-gold: #F59E0B;
   --text-main: #FFFFFF;
-  --text-muted: #9CA3AF;
-  --text-sub: #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-sub: #CBD5E1;
 }
 
 * {
@@ -24,37 +25,37 @@ body {
   font-family: 'Noto Sans JP', 'Inter', sans-serif;
   background-color: var(--bg-dark);
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(59, 130, 246, 0.12) 0%, transparent 40%);
   background-attachment: fixed;
   color: var(--text-main);
   min-height: 100vh;
   padding: 1.5rem 1rem;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 950px;
   margin: 0 auto;
 }
 
 .header {
   margin-bottom: 1.5rem;
+  text-align: left;
 }
 
 .badge {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(59, 130, 246, 0.4) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.7);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(59, 130, 246, 0.3) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.6);
   color: #F3E8FF;
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  padding: 0.4rem 1rem;
+  padding: 0.35rem 0.9rem;
   border-radius: 9999px;
   text-transform: uppercase;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+  margin-bottom: 0.6rem;
 }
 
 .title {
@@ -62,16 +63,11 @@ body {
   font-weight: 900;
   color: #FFFFFF;
   margin-bottom: 0.3rem;
-  letter-spacing: -0.01em;
 }
 
 .subtitle {
   color: var(--text-muted);
   font-size: 0.9rem;
-}
-
-.controls {
-  margin-bottom: 1.5rem;
 }
 
 .search-input {
@@ -83,12 +79,7 @@ body {
   color: var(--text-main);
   font-size: 0.95rem;
   outline: none;
-  transition: all 0.2s ease;
-}
-
-.search-input:focus {
-  border-color: var(--accent-purple);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+  margin-bottom: 1.5rem;
 }
 
 .report-list {
@@ -103,65 +94,33 @@ body {
   border-radius: 14px;
   padding: 1.25rem 1.5rem;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.report-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue));
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .report-card:hover {
-  background: var(--bg-card-hover);
-  border-color: rgba(168, 85, 247, 0.4);
+  background: #1E293B;
+  border-color: var(--accent-purple);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-
-.report-card:hover::before {
-  opacity: 1;
 }
 
 .card-title {
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 0.5rem;
+  color: #FFF;
+  margin-bottom: 0.4rem;
 }
 
 .card-summary {
   font-size: 0.9rem;
   color: var(--text-sub);
   margin-bottom: 0.8rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .card-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   font-size: 0.8rem;
   color: var(--text-muted);
-}
-
-.tag {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  color: #D1D5DB;
-  font-weight: 500;
 }
 
 .modal-overlay {
@@ -170,7 +129,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(4, 6, 12, 0.85);
+  background: rgba(4, 6, 12, 0.88);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
@@ -178,7 +137,7 @@ body {
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
   padding: 1rem;
 }
 
@@ -188,16 +147,15 @@ body {
 }
 
 .modal-content {
-  background: #0D1322;
+  background: #0B1120;
   border: 1px solid var(--border-color);
   border-radius: 20px;
   width: 100%;
-  max-width: 850px;
-  max-height: 90vh;
+  max-width: 950px;
+  max-height: 92vh;
   overflow-y: auto;
-  padding: 2rem;
+  padding: 1.75rem;
   position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .modal-close {
@@ -211,55 +169,226 @@ body {
   height: 36px;
   border-radius: 50%;
   font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.modal-close:hover {
-  background: rgba(239, 68, 68, 0.3);
-  color: #FFFFFF;
+/* ============================================================
+   13パネル プロ仕様 インフォグラフィック・ダッシュボード CSS
+   ============================================================ */
+.dashboard-container {
+  background: #0B101D;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-.modal-header {
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #1E1B4B 0%, #1E293B 100%);
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  border-left: 5px solid #3B82F6;
   margin-bottom: 1rem;
 }
 
-.modal-title {
-  font-size: 1.5rem;
-  font-weight: 800;
+.dashboard-header h2 {
+  font-size: 1.3rem;
+  font-weight: 900;
   color: #FFFFFF;
-  margin-top: 0.4rem;
 }
 
-#modalMarketData {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+.dashboard-header .timestamp {
+  font-size: 0.8rem;
+  color: #94A3B8;
 }
 
-.market-badge {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
+/* 13パネルグリッドレイアウト */
+.dash-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.dash-grid-3col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.dash-panel {
+  background: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1rem;
+  position: relative;
+}
+
+.panel-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  background: rgba(30, 41, 59, 0.8);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
 }
 
-.market-badge.up .market-change { color: var(--accent-green); }
-.market-badge.down .market-change { color: var(--accent-red); }
+.panel-title .num {
+  background: #3B82F6;
+  color: #FFF;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
 
+/* Panel 1: 今日の相場テーマ */
+.theme-box {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #EF4444;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.theme-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FCA5A5;
+  margin-bottom: 0.4rem;
+}
+
+.theme-flow {
+  font-size: 0.85rem;
+  color: #E2E8F0;
+  line-height: 1.5;
+}
+
+/* Panel 2: 主要市場データグリッド */
+.market-grid-dash {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.market-item-dash {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.market-item-dash .val {
+  font-weight: 700;
+}
+
+.market-item-dash .val.up { color: #10B981; }
+.market-item-dash .val.down { color: #EF4444; }
+
+/* Panel 3: 重要ニュース */
+.news-item-dash {
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.news-item-dash .news-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: #F3F4F6;
+}
+
+.badge-impact {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 800;
+}
+.badge-impact.high { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+.badge-impact.med { background: rgba(245, 158, 11, 0.2); color: #F59E0B; }
+
+/* Panel 5: クロスアセット資金フロー 3カラム */
+.ca-3col-dash {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+@media (max-width: 640px) {
+  .ca-3col-dash { grid-template-columns: 1fr; }
+}
+
+.ca-col-dash {
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+.ca-col-dash.red { background: rgba(239, 68, 68, 0.1); border-top: 3px solid #EF4444; }
+.ca-col-dash.green { background: rgba(16, 185, 129, 0.1); border-top: 3px solid #10B981; }
+.ca-col-dash.blue { background: rgba(59, 130, 246, 0.1); border-top: 3px solid #3B82F6; }
+
+.ca-col-dash .h {
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+.ca-col-dash.red .h { color: #FCA5A5; }
+.ca-col-dash.green .h { color: #6EE7B7; }
+.ca-col-dash.blue .h { color: #93C5FD; }
+
+/* Panel 7: 6市場の見通しミニカード */
+.market6-grid-dash {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+@media (max-width: 640px) {
+  .market6-grid-dash { grid-template-columns: repeat(2, 1fr); }
+}
+
+.m6-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.m6-card .m6-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  color: #FFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.m6-card .stance {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+.m6-card .stance.bull { background: rgba(16, 185, 129, 0.2); color: #10B981; }
+.m6-card .stance.bear { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+.m6-card .stance.neu { background: rgba(59, 130, 246, 0.2); color: #60A5FA; }
+
+/* Tab Nav */
 .tab-nav {
   display: flex;
   gap: 0.5rem;
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   overflow-x: auto;
 }
 
@@ -267,17 +396,12 @@ body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.6rem 1rem;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
   white-space: nowrap;
-}
-
-.tab-btn:hover {
-  color: #FFFFFF;
 }
 
 .tab-btn.active {
@@ -291,95 +415,4 @@ body {
 
 .tab-pane.active {
   display: block;
-}
-
-/* 5. クロスアセット資金フロー 3カラムビジュアルカード */
-.cross-asset-grid-3col {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.ca-card-red {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-top: 4px solid #EF4444;
-  border-radius: 12px;
-  padding: 1.25rem;
-}
-.ca-card-red .ca-title {
-  color: #FCA5A5;
-  font-weight: 800;
-  font-size: 1rem;
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.ca-card-green {
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  border-top: 4px solid #10B981;
-  border-radius: 12px;
-  padding: 1.25rem;
-}
-.ca-card-green .ca-title {
-  color: #6EE7B7;
-  font-weight: 800;
-  font-size: 1rem;
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.ca-card-blue {
-  background: rgba(59, 130, 246, 0.08);
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  border-top: 4px solid #3B82F6;
-  border-radius: 12px;
-  padding: 1.25rem;
-}
-.ca-card-blue .ca-title {
-  color: #93C5FD;
-  font-weight: 800;
-  font-size: 1rem;
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-.ca-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.ca-list li {
-  font-size: 0.9rem;
-  color: #E2E8F0;
-  margin-bottom: 0.5rem;
-  line-height: 1.5;
-  position: relative;
-  padding-left: 1.2rem;
-}
-.ca-card-red .ca-list li::before {
-  content: '•';
-  color: #EF4444;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
-}
-.ca-card-green .ca-list li::before {
-  content: '•';
-  color: #10B981;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
-}
-.ca-card-blue .ca-list li::before {
-  content: '•';
-  color: #3B82F6;
-  font-weight: bold;
-  position: absolute;
-  left: 0;
 }
