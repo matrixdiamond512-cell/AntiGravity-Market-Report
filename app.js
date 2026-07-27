@@ -103,7 +103,23 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 完璧な日本語で描画される全13パネル統合インフォグラフィック・ダッシュボードHTML
+    // 最上部に必ず図（インフォグラフィック画像）を表示するコンポーネント
+    let imageSection = '';
+    if (report.image) {
+      imageSection = `
+        <div style="margin-bottom: 1.5rem; text-align: center; background: rgba(15,23,42,0.9); border-radius: 14px; padding: 1.25rem; border: 1px solid rgba(168,85,247,0.3); box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <span style="color:#A855F7; font-weight:800; font-size:1rem;">🖼️ 1枚完結プロ仕様インフォグラフィック（図・チャート）</span>
+            <span style="color:var(--text-muted); font-size:0.8rem;">※タップで全画面拡大表示</span>
+          </div>
+          <a href="${escapeHTML(report.image)}" target="_blank" rel="noopener">
+            <img src="${escapeHTML(report.image)}" alt="${escapeHTML(report.title)}" style="max-width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 6px 25px rgba(0,0,0,0.6); cursor: zoom-in;" />
+          </a>
+        </div>
+      `;
+    }
+
+    // 完璧な日本語HTMLダッシュボード
     const dashboardHTML = `
       <div class="dashboard-container">
         <div class="dashboard-header">
@@ -111,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="timestamp">基準時刻：日本時間 2026/07/27 21:00前後までの情報</div>
         </div>
 
-        <!-- 1. 今日の相場テーマ -->
         <div class="dash-panel" style="margin-bottom:0.85rem;">
           <div class="panel-title"><span class="num">1</span> 今日の相場テーマ</div>
           <div class="theme-box">
@@ -123,9 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 2. 主要市場データ & 3. 重要ニュース & 4. 16:00からの主な変化 -->
         <div class="dash-grid-3col">
-          <!-- 2. 主要市場データ -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">2</span> 主要市場データ</div>
             <div class="market-grid-dash">
@@ -140,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- 3. 重要ニュース -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">3</span> 重要ニュース</div>
             <div class="news-item-dash">
@@ -157,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- 4. 16:00からの主な変化 -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">4</span> 16:00からの主な変化</div>
             <ul style="font-size:0.8rem; color:#CBD5E1; list-style:none; padding:0;">
@@ -169,9 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 5. クロスアセット資金フロー & 6. 需給・ポジションの状況 -->
         <div class="dash-grid-2col">
-          <!-- 5. クロスアセット資金フロー -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">5</span> クロスアセット資金フロー</div>
             <div class="ca-3col-dash">
@@ -198,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- 6. 需給・ポジションの状況 -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">6</span> 需給・ポジションの状況</div>
             <ul style="font-size:0.8rem; color:#CBD5E1; list-style:none; padding:0;">
@@ -212,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 7. 6市場の見通し -->
         <div class="dash-panel" style="margin-bottom:0.85rem;">
           <div class="panel-title"><span class="num">7</span> 6市場の見通し (売買判断・注目材料・重要水準)</div>
           <div class="market6-grid-dash">
@@ -249,9 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 8. メインシナリオ & 9. 代替シナリオ & 10. シナリオが崩れる条件 -->
         <div class="dash-grid-3col">
-          <!-- 8. メインシナリオ -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">8</span> メインシナリオ (確率: 50%)</div>
             <div style="font-size:0.8rem; color:#CBD5E1;">
@@ -262,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- 9. 代替シナリオ -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">9</span> 代替シナリオ</div>
             <ul style="font-size:0.78rem; color:#CBD5E1; list-style:none; padding:0;">
@@ -272,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </ul>
           </div>
 
-          <!-- 10. シナリオが崩れる条件 -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">10</span> シナリオが崩れる条件 (要警戒)</div>
             <ul style="font-size:0.78rem; color:#FCA5A5; list-style:none; padding:0;">
@@ -285,9 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 11. 注目ポイント & 12. 海外投資家・需給 & 13. 結論 -->
         <div class="dash-grid-3col">
-          <!-- 11. 注目ポイント -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">11</span> 今夜〜翌東京時間の注目ポイント</div>
             <div style="font-size:0.78rem; color:#CBD5E1;">
@@ -296,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- 12. 海外投資家・需給 -->
           <div class="dash-panel">
             <div class="panel-title"><span class="num">12</span> 海外投資家・需給フロー</div>
             <div style="font-size:0.78rem; color:#CBD5E1;">
@@ -306,7 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
 
-          <!-- 13. 結論 -->
           <div class="dash-panel" style="background:linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.9) 100%); border-color:var(--accent-purple);">
             <div class="panel-title" style="background:var(--accent-purple); color:#FFF;"><span class="num" style="background:#FFF; color:#A855F7;">13</span> 結論</div>
             <div style="font-size:0.78rem; color:#FFF; line-height:1.5;">
@@ -320,17 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderedHTML = renderMarkdown(report.fullText || '');
 
     modalFullText.innerHTML = `
+      ${imageSection}
+
       <div class="tab-nav">
         <button class="tab-btn active" data-tab="tab-dash">📊 全13パネル インフォグラフィック・ダッシュボード</button>
         <button class="tab-btn" data-tab="tab-text">📝 詳細全文テキスト</button>
       </div>
 
-      <!-- タブ1: 全13パネル インフォグラフィック・ダッシュボード（デフォルト表示） -->
       <div id="tab-dash" class="tab-pane active">
         ${dashboardHTML}
       </div>
 
-      <!-- タブ2: 詳細全文テキスト -->
       <div id="tab-text" class="tab-pane" style="line-height: 1.8; color: #E2E8F0; padding: 1rem 0;">
         ${renderedHTML}
       </div>
