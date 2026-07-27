@@ -6,23 +6,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalTag = document.getElementById('modalTag');
   const modalTitle = document.getElementById('modalTitle');
   const modalMarketData = document.getElementById('modalMarketData');
+  const modalFullText = document.getElementById('modalFullText');
 
   let allReports = [];
 
-  fetch('reports.json')
+  // キャッシュバスター付きで常に最新の reports.json を取得
+  fetch('reports.json?v=' + Date.now())
     .then(response => response.json())
     .then(data => {
       allReports = data;
       renderReports(allReports);
+      // 最初の（最新の）レポートをデフォルトでモーダルまたはメインビューに展開して表示
+      if (allReports.length > 0) {
+        openModal(allReports[0]);
+      }
     })
     .catch(err => {
       console.error('reports.json 読み込み失敗:', err);
+      reportList.innerHTML = '<p style="color:var(--text-muted); text-align: center; padding: 2rem;">レポートデータの読み込みに失敗しました。</p>';
     });
+
+  // 検索フィルター
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allReports.filter(r => 
+        r.title.toLowerCase().includes(term) || 
+        r.summary.toLowerCase().includes(term) ||
+        (r.fullText && r.fullText.toLowerCase().includes(term))
+      );
+      renderReports(filtered);
+    });
+  }
+
+  // モーダル閉じる
+  if (modalClose) {
+    modalClose.addEventListener('click', () => {
+      reportModal.classList.remove('active');
+    });
+  }
+
+  if (reportModal) {
+    reportModal.addEventListener('click', (e) => {
+      if (e.target === reportModal) {
+        reportModal.classList.remove('active');
+      }
+    });
+  }
 
   function renderReports(reports) {
     reportList.innerHTML = '';
     if (reports.length === 0) {
-      reportList.innerHTML = '<p style="color:var(--text-muted); text-align: center; padding: 2rem;">レポートが見つかりません。</p>';
+      reportList.innerHTML = '<p style="color:var(--text-muted); text-align: center; padding: 2rem;">該当するレポートが見つかりませんでした。</p>';
       return;
     }
 
@@ -53,30 +88,45 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openModal(report) {
+    if (!reportModal) return;
+
     modalTag.textContent = report.tag || report.time;
     modalTitle.textContent = report.title;
 
-    const wti = report.marketData ? report.marketData.find(x => x.name.includes('原油')) : null;
-    const gold = report.marketData ? report.marketData.find(x => x.name.includes('金') || x.name.includes('ゴールド')) : null;
-    const usdjpy = report.marketData ? report.marketData.find(x => x.name.includes('USD/JPY')) : null;
-    const n225 = report.marketData ? report.marketData.find(x => x.name.includes('日経225')) : null;
+    // 市場データサマリーバッジ
+    modalMarketData.innerHTML = '';
+    if (report.marketData && Array.isArray(report.marketData)) {
+      report.marketData.forEach(item => {
+        const badge = document.createElement('div');
+        badge.className = `market-badge ${item.status || 'up'}`;
+        badge.innerHTML = `
+          <span class="market-name">${escapeHTML(item.name)}</span>
+          <span class="market-price">${escapeHTML(item.close)}</span>
+          <span class="market-change">${escapeHTML(item.change)} (${escapeHTML(item.pct)})</span>
+        `;
+        modalMarketData.appendChild(badge);
+      });
+    }
 
-    const wtiClose = wti ? wti.close : '$83.53';
-    const wtiPct = wti ? wti.pct : '-6.47%';
-    const goldClose = gold ? gold.close : '$4,105.20';
-    const usdjpyClose = usdjpy ? usdjpy.close : '163.62';
+    // Markdown フルテキストをパースしてHTML化
+    const renderedHTML = renderMarkdown(report.fullText || '');
 
-    // タブ切替UI構造の生成
-    let contentHTML = `
+    // タブ切替UI構造（「📝 詳細全文（全17セクション）」をデフォルト最優先アクティブ）
+    modalFullText.innerHTML = `
       <div class="tab-nav">
-        <button class="tab-btn active" data-tab="tab-flow">📊 因果関係・図解</button>
-        <button class="tab-btn" data-tab="tab-matrix">📈 6市場売買判断</button>
-        <button class="tab-btn" data-tab="tab-text">📝 詳細全文</button>
+        <button class="tab-btn active" data-tab="tab-text">📝 詳細全文（全17セクション）</button>
+        <button class="tab-btn" data-tab="tab-flow">📊 因果関係図解</button>
+        <button class="tab-btn" data-tab="tab-matrix">📈 6市場売買判断カード</button>
       </div>
 
-      <!-- タブ1: 因果関係図解 -->
-      <div id="tab-flow" class="tab-pane active">
-        <div class="flow-card-box">
+      <!-- タブ1: 全17セクション詳細全文（デフォルト） -->
+      <div id="tab-text" class="tab-pane active" style="line-height: 1.8; color: #E2E8F0; padding: 1rem 0;">
+        ${renderedHTML}
+      </div>
+
+      <!-- タブ2: 因果関係図解 -->
+      <div id="tab-flow" class="tab-pane">
+        <div class="flow-card-box" style="margin-top: 1rem;">
           <h4 style="color:#FFF; margin-bottom:1rem; font-size:1.1rem;">■ 相場の因果関係フロー</h4>
           <div class="flow-step-item">
             <span>🕊️ 米・イラン攻撃停止 / 外交期待</span>
@@ -84,194 +134,192 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="flow-step-arrow">↓</div>
           <div class="flow-step-item">
-            <span>🛢️ WTI原油急落 (${wtiClose} / ${wtiPct})</span>
+            <span>🛢️ WTI原油急落 (82ドル台 / -7.62%)</span>
             <span class="down">インフレ懸念後退</span>
           </div>
           <div class="flow-step-arrow">↓</div>
           <div class="flow-step-item">
-            <span>🏛️ 米長期金利 低下期待</span>
+            <span>🏛️ 米長期金利 低下期待 (4.64%)</span>
             <span style="color:var(--accent-blue);">金利高止まり一服</span>
           </div>
           <div class="flow-step-arrow">↓</div>
           <div class="flow-step-item">
-            <span>💻 Nasdaq先物高 ➔ 日経225・半導体買戻し</span>
+            <span>💻 Nasdaq先物高 (+1.2%) ➔ 日経225・半導体買戻し</span>
             <span class="up">ショートカバー優先</span>
-          </div>
-        </div>
-
-        <div class="buy-sell-grid">
-          <div class="buy-card">
-            <div class="buy-card-title">🟢 買われた・買戻し優勢</div>
-            <ul class="item-list">
-              <li>半導体製造装置・AI関連</li>
-              <li>電子部品、一般消費財、航空</li>
-            </ul>
-          </div>
-          <div class="sell-card">
-            <div class="sell-card-title">🔴 売られた・売り優勢</div>
-            <ul class="item-list">
-              <li>エネルギー、素材・資源</li>
-              <li>石油元売り関連銘柄</li>
-            </ul>
           </div>
         </div>
       </div>
 
-      <!-- タブ2: 6市場売買判断 -->
+      <!-- タブ3: 6市場売買判断 -->
       <div id="tab-matrix" class="tab-pane">
-        <div class="market-grid-large">
+        <div class="market-grid-large" style="margin-top: 1rem;">
           <div class="large-asset-card">
             <div class="large-asset-title">
               <span>💴 USD/JPY</span>
-              <span>${usdjpyClose}</span>
+              <span>163円台半ば</span>
             </div>
             <div class="large-asset-body">
-              <div><strong>スタンス:</strong> 上値やや重い / 円安継続</div>
-              <div><strong>支持:</strong> 163.00 / <strong>抵抗:</strong> 164.00</div>
-              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">米金利低下か 163円台前半へ下がるか注視</div>
+              <div><strong>スタンス:</strong> 中立 (円安トレンド未崩壊)</div>
+              <div><strong>支持:</strong> 163.30円 / <strong>抵抗:</strong> 164.00円</div>
+              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">日米金利差・円キャリーが下値を強力サポート</div>
             </div>
           </div>
 
           <div class="large-asset-card">
             <div class="large-asset-title">
               <span>💶 EUR/USD</span>
-              <span>1.1386</span>
+              <span>1.1400近辺</span>
             </div>
             <div class="large-asset-body">
               <div><strong>スタンス:</strong> 中立〜やや強気</div>
-              <div><strong>支持:</strong> 1.1350 / <strong>抵抗:</strong> 1.1450</div>
-              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">ドル全面安に移るか 1.1450を試すか</div>
+              <div><strong>支持:</strong> 1.1380 / <strong>抵抗:</strong> 1.1418</div>
+              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">有事のドル買い解消も上値は限定的</div>
             </div>
           </div>
 
           <div class="large-asset-card">
             <div class="large-asset-title">
-              <span>🇯🇵 日経225</span>
-              <span>${n225 ? n225.close : '64,611'}</span>
+              <span>🇯🇵 日経225先物</span>
+              <span>65,230円</span>
             </div>
             <div class="large-asset-body">
-              <div><strong>スタンス:</strong> 自律反発余地あり</div>
-              <div><strong>支持:</strong> 64,000 / <strong>抵抗:</strong> 65,500</div>
-              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">半導体株の出来高を伴った反発に注目</div>
+              <div><strong>スタンス:</strong> 中立〜やや強気</div>
+              <div><strong>支持:</strong> 65,000円 / <strong>抵抗:</strong> 65,400円</div>
+              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">ショートカバー買い中心、米国株の寄り付き注視</div>
             </div>
           </div>
 
           <div class="large-asset-card">
             <div class="large-asset-title">
               <span>🛢️ WTI原油</span>
-              <span class="down">${wtiClose}</span>
+              <span>82ドル台</span>
             </div>
             <div class="large-asset-body">
-              <div><strong>スタンス:</strong> 弱気（急反発警戒）</div>
-              <div><strong>支持:</strong> 82.00 / <strong>抵抗:</strong> 85.00</div>
-              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">83ドル台維持か 追加ニュースに警戒</div>
+              <div><strong>スタンス:</strong> 弱気 (急反発リスクあり)</div>
+              <div><strong>支持:</strong> 82.00ドル / <strong>抵抗:</strong> 85.00ドル</div>
+              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">地政学プレミアム剥落と投機ロングの手仕舞い</div>
             </div>
           </div>
 
           <div class="large-asset-card">
             <div class="large-asset-title">
-              <span>🥇 ゴールド</span>
-              <span class="up">${goldClose}</span>
+              <span>🥇 金先物</span>
+              <span>4,103.05ドル</span>
             </div>
             <div class="large-asset-body">
-              <div><strong>スタンス:</strong> やや強気（FOMCヘッジ）</div>
-              <div><strong>支持:</strong> 4,000 / <strong>抵抗:</strong> 4,130</div>
-              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">$4,100台定着か 米金利低下が支え</div>
+              <div><strong>スタンス:</strong> やや強気</div>
+              <div><strong>支持:</strong> 4,085ドル / <strong>抵抗:</strong> 4,115ドル</div>
+              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">原油安・金利低下・ドル安が買いを強力後押し</div>
             </div>
           </div>
 
           <div class="large-asset-card">
             <div class="large-asset-title">
               <span>₿ BTCUSD</span>
-              <span>64,982</span>
+              <span>65,263.4ドル</span>
             </div>
             <div class="large-asset-body">
-              <div><strong>スタンス:</strong> やや強気レンジ内</div>
-              <div><strong>支持:</strong> 64,000 / <strong>抵抗:</strong> 65,500</div>
-              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">株高連動継続か 65,000ドル定着注視</div>
+              <div><strong>スタンス:</strong> やや強気 (レンジ内)</div>
+              <div><strong>支持:</strong> 65,000ドル / <strong>抵抗:</strong> 65,700ドル</div>
+              <div style="color:var(--text-muted); font-size:0.85rem; margin-top:0.3rem;">6万5,000ドル台回復もFOMC前の慎重さ残る</div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- タブ3: 詳細全文 -->
-      <div id="tab-text" class="tab-pane">
-        <div class="report-body-text">${formatMarkdown(report.fullText || report.summary)}</div>
-      </div>
     `;
 
-    modalMarketData.innerHTML = contentHTML;
-
-    // タブ切替イベントリスナーの登録
-    const tabBtns = modalMarketData.querySelectorAll('.tab-btn');
-    const tabPanes = modalMarketData.querySelectorAll('.tab-pane');
+    // タブ切替イベントのバインド
+    const tabBtns = modalFullText.querySelectorAll('.tab-btn');
+    const tabPanes = modalFullText.querySelectorAll('.tab-pane');
 
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
         tabBtns.forEach(b => b.classList.remove('active'));
         tabPanes.forEach(p => p.classList.remove('active'));
 
         btn.classList.add('active');
-        const targetPane = modalMarketData.querySelector('#' + btn.getAttribute('data-tab'));
-        if (targetPane) targetPane.classList.add('active');
+        const activePane = modalFullText.querySelector(`#${targetTab}`);
+        if (activePane) activePane.classList.add('active');
       });
     });
 
     reportModal.classList.add('active');
-    reportModal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
   }
 
-  function closeModal() {
-    reportModal.classList.remove('active');
-    reportModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
+  // Markdownテキストを綺麗なHTML構造へ変換するレンダラー
+  function renderMarkdown(md) {
+    if (!md) return '';
+    
+    let html = md;
 
-  modalClose.addEventListener('click', closeModal);
-  reportModal.addEventListener('click', (e) => {
-    if (e.target === reportModal) closeModal();
-  });
+    // ヘッダー #, ##, ###
+    html = html.replace(/^# (.*$)/gim, '<h1 style="color:#FFF; font-size:1.6rem; font-weight:800; border-bottom:2px solid var(--accent-purple); padding-bottom:0.5rem; margin:1.5rem 0 1rem 0;">$1</h1>');
+    html = html.replace(/^### (.*$)/gim, '<h3 style="color:#60A5FA; font-size:1.2rem; font-weight:700; margin:1.5rem 0 0.8rem 0; padding-left:0.5rem; border-left:4px solid #3B82F6;">$1</h3>');
+    html = html.replace(/^#### (.*$)/gim, '<h4 style="color:#F3F4F6; font-size:1.05rem; font-weight:600; margin:1.2rem 0 0.5rem 0;">$1</h4>');
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && reportModal.classList.contains('active')) closeModal();
-  });
+    // 水平線 ---
+    html = html.replace(/^---$/gim, '<hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:1.5rem 0;">');
 
-  searchInput.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    if (!query) {
-      renderReports(allReports);
-      return;
+    // 強調 **bold**
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color:#FFF; font-weight:700;">$1</strong>');
+
+    // コードスタイル `code`
+    html = html.replace(/`(.*?)`/g, '<code style="background:rgba(255,255,255,0.1); color:#F59E0B; padding:0.1rem 0.4rem; border-radius:4px;">$1</code>');
+
+    // リスト項目 * 
+    html = html.replace(/^\* (.*$)/gim, '<li style="margin-left:1.5rem; margin-bottom:0.3rem;">$1</li>');
+
+    // テーブルパース (| header | ... |)
+    const lines = html.split('\n');
+    let inTable = false;
+    let tableHTML = '';
+    let newLines = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i].trim();
+      if (line.startsWith('|') && line.endsWith('|')) {
+        if (!inTable) {
+          inTable = true;
+          tableHTML = '<div style="overflow-x:auto; margin:1rem 0;"><table style="width:100%; border-collapse:collapse; background:rgba(15,23,42,0.6); border-radius:8px; overflow:hidden;">';
+        }
+        if (line.includes('---')) {
+          continue; // 区切り行スキップ
+        }
+        const cells = line.split('|').slice(1, -1);
+        const isHeader = (tableHTML.includes('<thead>') === false);
+        
+        if (isHeader) {
+          tableHTML += '<thead style="background:rgba(30,41,59,0.9); border-bottom:1px solid rgba(255,255,255,0.1);"><tr style="color:#94A3B8; text-align:left;">';
+          cells.forEach(c => tableHTML += `<th style="padding:0.75rem 1rem;">${c.trim()}</th>`);
+          tableHTML += '</tr></thead><tbody>';
+        } else {
+          tableHTML += '<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">';
+          cells.forEach(c => tableHTML += `<td style="padding:0.75rem 1rem;">${c.trim()}</td>`);
+          tableHTML += '</tr>';
+        }
+      } else {
+        if (inTable) {
+          inTable = false;
+          tableHTML += 'tbody></table></div>';
+          newLines.push(tableHTML);
+          tableHTML = '';
+        }
+        newLines.push(line);
+      }
+    }
+    if (inTable) {
+      tableHTML += 'tbody></table></div>';
+      newLines.push(tableHTML);
     }
 
-    const filtered = allReports.filter(r => 
-      r.title.toLowerCase().includes(query) ||
-      r.summary.toLowerCase().includes(query) ||
-      (r.theme && r.theme.toLowerCase().includes(query)) ||
-      (r.fullText && r.fullText.toLowerCase().includes(query))
-    );
-
-    renderReports(filtered);
-  });
+    return newLines.join('\n').replace(/\n\n/g, '<br/>');
+  }
 
   function escapeHTML(str) {
     if (!str) return '';
-    return str.replace(/[&<>"']/g, match => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    }[match]));
-  }
-
-  function formatMarkdown(text) {
-    if (!text) return '';
-    let html = escapeHTML(text);
-    html = html.replace(/# (.*?)\n/g, '<h2 style="color:#FFF; font-size:1.4rem; margin-top:1.5rem; margin-bottom:0.5rem;">$1</h2>');
-    html = html.replace(/### (.*?)\n/g, '<h3 style="color:var(--accent-purple); font-size:1.15rem; margin-top:1.25rem; margin-bottom:0.5rem;">$1</h3>');
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color:#FFF;">$1</strong>');
-    html = html.replace(/\n/g, '<br>');
-    return html;
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
   }
 });
