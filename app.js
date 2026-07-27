@@ -111,15 +111,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Markdown フルテキストをパースしてHTML化
     const renderedHTML = renderMarkdown(report.fullText || '');
 
-    // タブ切替UI構造（「📝 詳細全文（全17セクション）」をデフォルト最優先アクティブ）
+    // インフォグラフィック画像エリア（存在する場合）
+    let imageHTML = '';
+    if (report.image) {
+      imageHTML = `
+        <div style="margin-bottom: 1.5rem; text-align: center; background: rgba(15,23,42,0.8); border-radius: 12px; padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+          <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem; text-align:left;">🖼️ 1枚完結プロ仕様インフォグラフィック（タップで拡大表示）</div>
+          <a href="${escapeHTML(report.image)}" target="_blank" rel="noopener">
+            <img src="${escapeHTML(report.image)}" alt="${escapeHTML(report.title)}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); cursor: zoom-in;" />
+          </a>
+        </div>
+      `;
+    }
+
+    // タブ切替UI構造
     modalFullText.innerHTML = `
+      ${imageHTML}
+
       <div class="tab-nav">
-        <button class="tab-btn active" data-tab="tab-text">📝 詳細全文（全17セクション）</button>
+        <button class="tab-btn active" data-tab="tab-text">📝 詳細全文（全13テーマ完全網羅）</button>
         <button class="tab-btn" data-tab="tab-flow">📊 因果関係図解</button>
         <button class="tab-btn" data-tab="tab-matrix">📈 6市場売買判断カード</button>
       </div>
 
-      <!-- タブ1: 全17セクション詳細全文（デフォルト） -->
+      <!-- タブ1: 全セクション詳細全文（デフォルト） -->
       <div id="tab-text" class="tab-pane active" style="line-height: 1.8; color: #E2E8F0; padding: 1rem 0;">
         ${renderedHTML}
       </div>
