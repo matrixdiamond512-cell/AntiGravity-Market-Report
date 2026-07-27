@@ -34,7 +34,7 @@ body {
 }
 
 .container {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -78,96 +78,100 @@ body {
   width: 100%;
   background: rgba(15, 23, 42, 0.95);
   border: 1px solid var(--border-color);
-  border-radius: 14px;
-  padding: 0.9rem 1.25rem;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
   color: var(--text-main);
-  font-size: 1rem;
+  font-size: 0.95rem;
   outline: none;
   transition: all 0.2s ease;
 }
 
 .search-input:focus {
   border-color: var(--accent-purple);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
 }
 
 .report-list {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .report-card {
-  position: relative;
   background: var(--bg-card);
-  backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
-  border-radius: 18px;
-  padding: 1.5rem 1.5rem 1.5rem 2.2rem;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
   cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
   overflow: hidden;
-  transition: all 0.25s ease;
 }
 
 .report-card::before {
   content: '';
   position: absolute;
-  top: 16px;
-  left: 12px;
-  bottom: 16px;
-  width: 5px;
-  border-radius: 6px;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
   background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue));
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .report-card:hover {
   background: var(--bg-card-hover);
+  border-color: rgba(168, 85, 247, 0.4);
   transform: translateY(-2px);
-  border-color: rgba(168, 85, 247, 0.5);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.report-card:hover::before {
+  opacity: 1;
 }
 
 .card-title {
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: #FFFFFF;
-  margin-bottom: 0.6rem;
-  line-height: 1.4;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
 }
 
 .card-summary {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-sub);
-  line-height: 1.65;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
 .tag {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.3rem 0.75rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  color: #D1D5DB;
+  font-weight: 500;
 }
 
-/* スッキリ見やすいモーダルUI */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 6, 12, 0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -184,89 +188,101 @@ body {
 }
 
 .modal-content {
-  background: #0F172A;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 24px;
+  background: #0D1322;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
   width: 100%;
-  max-width: 760px;
-  max-height: 88vh;
+  max-width: 850px;
+  max-height: 90vh;
   overflow-y: auto;
-  padding: 2rem 1.75rem;
+  padding: 2rem;
   position: relative;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9);
-  transform: scale(0.95);
-  transition: transform 0.3s ease;
-}
-
-.modal-overlay.active .modal-content {
-  transform: scale(1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .modal-close {
   position: absolute;
   top: 1.25rem;
   right: 1.25rem;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
-  color: #FFF;
-  width: 38px;
-  height: 38px;
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .modal-close:hover {
-  background: rgba(239, 68, 68, 0.9);
+  background: rgba(239, 68, 68, 0.3);
+  color: #FFFFFF;
 }
 
 .modal-header {
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1rem;
 }
 
 .modal-title {
-  font-size: 1.65rem;
-  font-weight: 900;
+  font-size: 1.5rem;
+  font-weight: 800;
   color: #FFFFFF;
-  margin-top: 0.5rem;
-  line-height: 1.35;
+  margin-top: 0.4rem;
 }
 
-/* タブナビゲーション（スッキリ切替） */
+#modalMarketData {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.market-badge {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.market-badge.up .market-change { color: var(--accent-green); }
+.market-badge.down .market-change { color: var(--accent-red); }
+
 .tab-nav {
   display: flex;
   gap: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 1.5rem;
-  background: rgba(15, 23, 42, 0.8);
-  padding: 0.35rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
 }
 
 .tab-btn {
-  flex: 1;
-  padding: 0.65rem 0.5rem;
-  border: none;
   background: transparent;
+  border: none;
   color: var(--text-muted);
-  font-weight: 800;
-  font-size: 0.9rem;
-  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
   cursor: pointer;
+  border-bottom: 2px solid transparent;
   transition: all 0.2s ease;
-  text-align: center;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: #FFFFFF;
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-  color: #FFFFFF;
-  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+  color: var(--accent-purple);
+  border-bottom-color: var(--accent-purple);
 }
 
 .tab-pane {
@@ -277,95 +293,93 @@ body {
   display: block;
 }
 
-/* 因果関係カード（大見出し＋アイコン） */
-.flow-card-box {
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 16px;
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-.flow-step-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(15, 23, 42, 0.8);
-  padding: 0.85rem 1.1rem;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.flow-step-arrow {
-  text-align: center;
-  color: var(--accent-purple);
-  font-size: 1.3rem;
-  font-weight: 900;
-  margin: 0.2rem 0;
-}
-
-/* 6市場大型見やすいカード */
-.market-grid-large {
+/* 5. クロスアセット資金フロー 3カラムビジュアルカード */
+.cross-asset-grid-3col {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
 }
 
-.large-asset-card {
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
+.ca-card-red {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-top: 4px solid #EF4444;
+  border-radius: 12px;
   padding: 1.25rem;
 }
-
-.large-asset-title {
-  font-size: 1.15rem;
-  font-weight: 900;
-  color: #FFF;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 0.6rem;
-  margin-bottom: 0.75rem;
-}
-
-.large-asset-body {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--text-sub);
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.up { color: var(--accent-green); font-weight: 800; }
-.down { color: var(--accent-red); font-weight: 800; }
-
-.report-body-text {
-  white-space: pre-wrap;
-  color: var(--text-sub);
+.ca-card-red .ca-title {
+  color: #FCA5A5;
+  font-weight: 800;
   font-size: 1rem;
-  line-height: 1.8;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* テーブルスタイル調整 */
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
-  font-size: 0.95rem;
+.ca-card-green {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-top: 4px solid #10B981;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+.ca-card-green .ca-title {
+  color: #6EE7B7;
+  font-weight: 800;
+  font-size: 1rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.data-table th, .data-table td {
-  padding: 0.75rem 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+.ca-card-blue {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-top: 4px solid #3B82F6;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+.ca-card-blue .ca-title {
+  color: #93C5FD;
+  font-weight: 800;
+  font-size: 1rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.3);
 }
 
-.data-table th {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-muted);
-  font-weight: 700;
+.ca-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ca-list li {
+  font-size: 0.9rem;
+  color: #E2E8F0;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.2rem;
+}
+.ca-card-red .ca-list li::before {
+  content: '•';
+  color: #EF4444;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+.ca-card-green .ca-list li::before {
+  content: '•';
+  color: #10B981;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+.ca-card-blue .ca-list li::before {
+  content: '•';
+  color: #3B82F6;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
 }

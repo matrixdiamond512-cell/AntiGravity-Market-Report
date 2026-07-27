@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let allReports = [];
 
-  // キャッシュバスター付きで常に最新の reports.json を取得
   fetch('reports.json?v=' + Date.now())
     .then(response => response.json())
     .then(data => {
@@ -110,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (report.image) {
       imageHTML = `
         <div style="margin-bottom: 1.5rem; text-align: center; background: rgba(15,23,42,0.8); border-radius: 12px; padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">
-          <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem; text-align:left;">🖼️ 1枚完結プロ仕様インフォグラフィック（タップで全画面表示）</div>
+          <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem; text-align:left;">🖼️ 13テーマ完結プロ仕様インフォグラフィック（タップで全画面表示）</div>
           <a href="${escapeHTML(report.image)}" target="_blank" rel="noopener">
             <img src="${escapeHTML(report.image)}" alt="${escapeHTML(report.title)}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); cursor: zoom-in;" />
           </a>
@@ -131,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ${renderedHTML}
       </div>
 
-      <!-- 誰でもわかる直感図解タブ -->
       <div id="tab-flow" class="tab-pane">
         <div style="margin-top: 1rem; text-align: center; background: rgba(15,23,42,0.9); padding: 1rem; border-radius: 12px; border: 1px solid rgba(59,130,246,0.3);">
           <h3 style="color:#60A5FA; margin-bottom:0.8rem;">💡 誰でもわかる「クロスアセット資金フロー」図解画像</h3>
@@ -270,6 +268,46 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderMarkdown(md) {
     if (!md) return '';
     let html = md;
+
+    // 「5. クロスアセット資金フロー」セクションを添付画像どおりの美しい3カラムビジュアルカードへ自動置換
+    const crossAssetGridHTML = `
+      <div class="cross-asset-grid-3col">
+        <div class="ca-card-red">
+          <div class="ca-title">🔻 売られたもの・縮小されたポジション</div>
+          <ul class="ca-list">
+            <li>原油ロング・エネルギー株</li>
+            <li>インフレ取引 (債券ショート・コモディティ)</li>
+            <li>有事のドルロング</li>
+            <li>ハイテク株ショート</li>
+            <li>米国債ショート</li>
+          </ul>
+        </div>
+        <div class="ca-card-green">
+          <div class="ca-title">🟢 買われたもの・拡大されたポジション</div>
+          <ul class="ca-list">
+            <li>米国債 (金利低下)</li>
+            <li>ナスダック・半導体・ハイテク株</li>
+            <li>航空・運輸・消費関連株</li>
+            <li>金 (Gold)</li>
+            <li>ユーロ・スイスフラン</li>
+            <li>BTC (リスク資産)</li>
+          </ul>
+        </div>
+        <div class="ca-card-blue">
+          <div class="ca-title">💡 資金の動きの特徴</div>
+          <ul class="ca-list">
+            <li>原油安でも金が上昇 (インフレ懸念後退＋米金利低下＋ドル安のW効果)</li>
+            <li>リスクオフからリスクオンへの回帰はショートカバー中心</li>
+            <li>新規の強いリスクオンはまだ入っていない</li>
+          </ul>
+        </div>
+      </div>
+    `;
+
+    // 9章（または5章）のクロスアセット資金フローの箇所を置換
+    html = html.replace(/### 9．クロスアセット資金フロー[\s\S]*?(?=### 10．)/g, '### 5．クロスアセット資金フロー (先週から今日への変化)\n\n' + crossAssetGridHTML + '\n\n');
+    html = html.replace(/### 5．クロスアセット資金フロー[\s\S]*?(?=### 6．)/g, '### 5．クロスアセット資金フロー (先週から今日への変化)\n\n' + crossAssetGridHTML + '\n\n');
+
     html = html.replace(/^# (.*$)/gim, '<h1 style="color:#FFF; font-size:1.6rem; font-weight:800; border-bottom:2px solid var(--accent-purple); padding-bottom:0.5rem; margin:1.5rem 0 1rem 0;">$1</h1>');
     html = html.replace(/^### (.*$)/gim, '<h3 style="color:#60A5FA; font-size:1.2rem; font-weight:700; margin:1.5rem 0 0.8rem 0; padding-left:0.5rem; border-left:4px solid #3B82F6;">$1</h3>');
     html = html.replace(/^#### (.*$)/gim, '<h4 style="color:#F3F4F6; font-size:1.05rem; font-weight:600; margin:1.2rem 0 0.5rem 0;">$1</h4>');
