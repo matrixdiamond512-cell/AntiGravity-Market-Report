@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       allReports = data;
       renderReports(allReports);
-      // 最初の（最新の）レポートをデフォルトでモーダルまたはメインビューに展開して表示
       if (allReports.length > 0) {
         openModal(allReports[0]);
       }
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
       reportList.innerHTML = '<p style="color:var(--text-muted); text-align: center; padding: 2rem;">レポートデータの読み込みに失敗しました。</p>';
     });
 
-  // 検索フィルター
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const term = e.target.value.toLowerCase();
@@ -39,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // モーダル閉じる
   if (modalClose) {
     modalClose.addEventListener('click', () => {
       reportModal.classList.remove('active');
@@ -93,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modalTag.textContent = report.tag || report.time;
     modalTitle.textContent = report.title;
 
-    // 市場データサマリーバッジ
     modalMarketData.innerHTML = '';
     if (report.marketData && Array.isArray(report.marketData)) {
       report.marketData.forEach(item => {
@@ -108,15 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Markdown フルテキストをパースしてHTML化
     const renderedHTML = renderMarkdown(report.fullText || '');
 
-    // インフォグラフィック画像エリア（存在する場合）
     let imageHTML = '';
     if (report.image) {
       imageHTML = `
         <div style="margin-bottom: 1.5rem; text-align: center; background: rgba(15,23,42,0.8); border-radius: 12px; padding: 1rem; border: 1px solid rgba(255,255,255,0.1);">
-          <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem; text-align:left;">🖼️ 1枚完結プロ仕様インフォグラフィック（タップで拡大表示）</div>
+          <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0.5rem; text-align:left;">🖼️ 1枚完結プロ仕様インフォグラフィック（タップで全画面表示）</div>
           <a href="${escapeHTML(report.image)}" target="_blank" rel="noopener">
             <img src="${escapeHTML(report.image)}" alt="${escapeHTML(report.title)}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); cursor: zoom-in;" />
           </a>
@@ -124,48 +118,60 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
-    // タブ切替UI構造
     modalFullText.innerHTML = `
       ${imageHTML}
 
       <div class="tab-nav">
         <button class="tab-btn active" data-tab="tab-text">📝 詳細全文（全13テーマ完全網羅）</button>
-        <button class="tab-btn" data-tab="tab-flow">📊 因果関係図解</button>
+        <button class="tab-btn" data-tab="tab-flow">💡 誰でもわかる！資金フロー図解</button>
         <button class="tab-btn" data-tab="tab-matrix">📈 6市場売買判断カード</button>
       </div>
 
-      <!-- タブ1: 全セクション詳細全文（デフォルト） -->
       <div id="tab-text" class="tab-pane active" style="line-height: 1.8; color: #E2E8F0; padding: 1rem 0;">
         ${renderedHTML}
       </div>
 
-      <!-- タブ2: 因果関係図解 -->
+      <!-- 誰でもわかる直感図解タブ -->
       <div id="tab-flow" class="tab-pane">
-        <div class="flow-card-box" style="margin-top: 1rem;">
-          <h4 style="color:#FFF; margin-bottom:1rem; font-size:1.1rem;">■ 相場の因果関係フロー</h4>
-          <div class="flow-step-item">
-            <span>🕊️ 米・イラン攻撃停止 / 外交期待</span>
-            <span style="color:var(--accent-green);">地政学リスク後退</span>
+        <div style="margin-top: 1rem; text-align: center; background: rgba(15,23,42,0.9); padding: 1rem; border-radius: 12px; border: 1px solid rgba(59,130,246,0.3);">
+          <h3 style="color:#60A5FA; margin-bottom:0.8rem;">💡 誰でもわかる「クロスアセット資金フロー」図解画像</h3>
+          <a href="cross_asset_flow_explained.png" target="_blank" rel="noopener">
+            <img src="cross_asset_flow_explained.png" alt="クロスアセット資金フロー解説図" style="max-width:100%; border-radius:8px; box-shadow:0 4px 20px rgba(0,0,0,0.5);" />
+          </a>
+        </div>
+
+        <div class="flow-card-box" style="margin-top: 1.5rem;">
+          <h4 style="color:#FFF; margin-bottom:1rem; font-size:1.1rem;">🔄 お金の引っ越し（資金の動き）3ステップ</h4>
+          
+          <div style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.4); padding:1rem; border-radius:8px; margin-bottom:1rem;">
+            <div style="color:#FCA5A5; font-weight:700; font-size:1.05rem;">❌ STEP 1: お金が逃げ出した場所 (OUT)</div>
+            <p style="color:#CBD5E1; font-size:0.95rem; margin-top:0.3rem;">
+              • 🛢️ <strong>原油 & 石油株</strong>（中東戦争の緊張が和らぎ、急落！）<br>
+              • 💵 <strong>米ドル</strong>（有事の安全資産としての買われ過ぎが解消）
+            </p>
           </div>
-          <div class="flow-step-arrow">↓</div>
-          <div class="flow-step-item">
-            <span>🛢️ WTI原油急落 (82ドル台 / -7.62%)</span>
-            <span class="down">インフレ懸念後退</span>
+
+          <div style="text-align:center; font-size:1.5rem; color:#60A5FA; margin:0.5rem 0;">⬇️（抜け出た大量のお金が移動）⬇️</div>
+
+          <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); padding:1rem; border-radius:8px; margin-bottom:1rem;">
+            <div style="color:#6EE7B7; font-weight:700; font-size:1.05rem;">⭕ STEP 2: お金が引っ越した場所 (IN)</div>
+            <p style="color:#CBD5E1; font-size:0.95rem; margin-top:0.3rem;">
+              • 💻 <strong>ハイテク・半導体株</strong>（原油安でインフレ懸念が消え、猛烈買い戻し！）<br>
+              • 🏛️ <strong>米国債（金利低下）</strong>（インフレ沈静化を期待して債券へ資金流入）<br>
+              • 🥇 <strong>金 (Gold)</strong>（米金利低下＆ドル安のW追い風で上昇）<br>
+              • ✈️ <strong>航空・消費株</strong>（原油安で燃料コストが下がるメリット）
+            </p>
           </div>
-          <div class="flow-step-arrow">↓</div>
-          <div class="flow-step-item">
-            <span>🏛️ 米長期金利 低下期待 (4.64%)</span>
-            <span style="color:var(--accent-blue);">金利高止まり一服</span>
-          </div>
-          <div class="flow-step-arrow">↓</div>
-          <div class="flow-step-item">
-            <span>💻 Nasdaq先物高 (+1.2%) ➔ 日経225・半導体買戻し</span>
-            <span class="up">ショートカバー優先</span>
+
+          <div style="background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.4); padding:1rem; border-radius:8px;">
+            <div style="color:#FDE68A; font-weight:700; font-size:1.05rem;">⚠️ STEP 3: 一番重要なまとめ</div>
+            <p style="color:#CBD5E1; font-size:0.95rem; margin-top:0.3rem;">
+              これは「イケイケの新しい株買い」ではなく、<strong>「先週まで偏りすぎていた売り買いを元に戻す取引（手仕舞い・買い戻し）」</strong>です！
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- タブ3: 6市場売買判断 -->
       <div id="tab-matrix" class="tab-pane">
         <div class="market-grid-large" style="margin-top: 1rem;">
           <div class="large-asset-card">
@@ -243,7 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    // タブ切替イベントのバインド
     const tabBtns = modalFullText.querySelectorAll('.tab-btn');
     const tabPanes = modalFullText.querySelectorAll('.tab-pane');
 
@@ -262,30 +267,17 @@ document.addEventListener('DOMContentLoaded', () => {
     reportModal.classList.add('active');
   }
 
-  // Markdownテキストを綺麗なHTML構造へ変換するレンダラー
   function renderMarkdown(md) {
     if (!md) return '';
-    
     let html = md;
-
-    // ヘッダー #, ##, ###
     html = html.replace(/^# (.*$)/gim, '<h1 style="color:#FFF; font-size:1.6rem; font-weight:800; border-bottom:2px solid var(--accent-purple); padding-bottom:0.5rem; margin:1.5rem 0 1rem 0;">$1</h1>');
     html = html.replace(/^### (.*$)/gim, '<h3 style="color:#60A5FA; font-size:1.2rem; font-weight:700; margin:1.5rem 0 0.8rem 0; padding-left:0.5rem; border-left:4px solid #3B82F6;">$1</h3>');
     html = html.replace(/^#### (.*$)/gim, '<h4 style="color:#F3F4F6; font-size:1.05rem; font-weight:600; margin:1.2rem 0 0.5rem 0;">$1</h4>');
-
-    // 水平線 ---
     html = html.replace(/^---$/gim, '<hr style="border:none; border-top:1px solid rgba(255,255,255,0.1); margin:1.5rem 0;">');
-
-    // 強調 **bold**
     html = html.replace(/\*\*(.*?)\*\*/g, '<strong style="color:#FFF; font-weight:700;">$1</strong>');
-
-    // コードスタイル `code`
     html = html.replace(/`(.*?)`/g, '<code style="background:rgba(255,255,255,0.1); color:#F59E0B; padding:0.1rem 0.4rem; border-radius:4px;">$1</code>');
-
-    // リスト項目 * 
     html = html.replace(/^\* (.*$)/gim, '<li style="margin-left:1.5rem; margin-bottom:0.3rem;">$1</li>');
 
-    // テーブルパース (| header | ... |)
     const lines = html.split('\n');
     let inTable = false;
     let tableHTML = '';
@@ -298,12 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
           inTable = true;
           tableHTML = '<div style="overflow-x:auto; margin:1rem 0;"><table style="width:100%; border-collapse:collapse; background:rgba(15,23,42,0.6); border-radius:8px; overflow:hidden;">';
         }
-        if (line.includes('---')) {
-          continue; // 区切り行スキップ
-        }
+        if (line.includes('---')) continue;
         const cells = line.split('|').slice(1, -1);
         const isHeader = (tableHTML.includes('<thead>') === false);
-        
         if (isHeader) {
           tableHTML += '<thead style="background:rgba(30,41,59,0.9); border-bottom:1px solid rgba(255,255,255,0.1);"><tr style="color:#94A3B8; text-align:left;">';
           cells.forEach(c => tableHTML += `<th style="padding:0.75rem 1rem;">${c.trim()}</th>`);
