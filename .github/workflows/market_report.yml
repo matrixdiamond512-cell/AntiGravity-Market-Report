@@ -2,14 +2,14 @@ name: Auto Market Report Generator
 
 on:
   schedule:
-    # JST 07:00 (UTC 22:00 prev day)
-    - cron: '0 22 * * *'
-    # JST 12:00 (UTC 03:00)
-    - cron: '0 3 * * *'
-    # JST 16:00 (UTC 07:00)
-    - cron: '0 7 * * *'
-    # JST 21:00 (UTC 12:00)
-    - cron: '0 12 * * *'
+    # JST 07:00 (UTC 22:05 prev day)
+    - cron: '5 22 * * *'
+    # JST 12:00 (UTC 03:05)
+    - cron: '5 3 * * *'
+    # JST 16:00 (UTC 07:05)
+    - cron: '5 7 * * *'
+    # JST 21:00 (UTC 12:05)
+    - cron: '5 12 * * *'
   workflow_dispatch:
 
 jobs:
