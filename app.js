@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <!-- 2. 主要市場データ & 3. 重要ニュース & 4. 12:00からの主な変化 -->
         <div class="dash-grid-3col">
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">2</span> 主要市場データ (16:00確認値)</div>
+            <div class="panel-title"><span class="num">2</span> 主要市場データ (確認値)</div>
             <div class="market-grid-dash">
               ${mGridHTML}
             </div>
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">4</span> 12:00からの変化</div>
+            <div class="panel-title"><span class="num">4</span> 直近の主な変化</div>
             <ul style="font-size:0.8rem; color:#CBD5E1; list-style:none; padding:0;">
               <li style="margin-bottom:0.4rem;">• <strong>日経先物</strong>: 安値から約280円戻すも、半導体への新規買い入らず</li>
               <li style="margin-bottom:0.4rem;">• <strong>USD/JPY</strong>: 163.70円台で小幅揉み合い</li>
@@ -276,13 +276,21 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 11. 注目ポイント & 12. 引き継ぎ & 13. 結論 -->
+        <!-- 11. 今後のイベント & 12. 引き継ぎ & 13. 結論 -->
         <div class="dash-grid-3col">
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">11</span> 今後のイベント</div>
-            <div style="font-size:0.78rem; color:#CBD5E1;">
-              <strong>今夜NY:</strong> 米消費者信頼感、FOMC初日、米大型企業決算<br>
-              <strong>今週:</strong> FOMC金利発表、米GDP、GAFAM決算、日銀決定会合
+            <div class="panel-title"><span class="num">11</span> 今後のイベント (日本時間 タイムスタンプ付)</div>
+            <div style="font-size:0.78rem; color:#CBD5E1; line-height:1.5;">
+              <strong>今夜NY (7/28):</strong><br>
+              🕒 <strong>21:30</strong> 米・6月卸売在庫<br>
+              🕒 <strong>22:00</strong> 米・S&Pケースシラー住宅価格<br>
+              🕒 <strong>23:00</strong> 米・7月CB消費者信頼感指数<br>
+              🕒 <strong>27:00 (翌03:00)</strong> 米・FOMC 1日目<br>
+              🕒 <strong>22:30〜</strong> GAFAM大型決算<br>
+              <strong>今週のハイライト:</strong><br>
+              📅 <strong>7/29 27:00</strong> FOMC金利発表 (27:30 会見)<br>
+              📅 <strong>7/30 21:30</strong> 米4-6月GDP速報<br>
+              📅 <strong>7/31 12:00頃</strong> 日銀決定会合 (15:30 植田総裁会見)
             </div>
           </div>
 
