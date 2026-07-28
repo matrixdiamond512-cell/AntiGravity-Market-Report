@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 完璧な動的日本語HTMLダッシュボード
+    // 全16セクション完全対応プロ仕様動的ダッシュボード
     const dashboardHTML = `
       <div class="dashboard-container">
         <div class="dashboard-header">
@@ -124,46 +124,45 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="dash-panel" style="margin-bottom:0.85rem;">
           <div class="panel-title"><span class="num">1</span> 今日の相場テーマ</div>
           <div class="theme-box">
-            <div class="theme-title">≫ ${escapeHTML(report.theme || '中東リスク緩和による「スタグフレーション取引の巻き戻し」')}</div>
+            <div class="theme-title">≫ ${escapeHTML(report.theme || 'アジア半導体株急落とAI投資不安・FOMC利上げ警戒によるリスク縮小')}</div>
             <div class="theme-flow">
-              攻撃停止 ➔ 原油急落 ➔ インフレ懸念後退 ➔ 米金利低下期待 ➔ 株高（特にハイテク）・金上昇・ドル売りの流れ<br>
-              <span style="color:#94A3B8; font-size:0.8rem;">（※上昇は新規リスクオンではなく、ショートカバーやポジション調整が中心。FOMC・大型決算・日銀会合前で上値追いは限定的。）</span>
+              中国競争警戒＋AI投資負担懸念＋FOMC利上げリスク ➔ 韓国半導体サーキットブレーカー ➔ アジア・レバレッジ解消 ➔ 日本の半導体・値がさ株へ売り波及 ➔ 日経225先物急落
             </div>
           </div>
         </div>
 
-        <!-- 2. 主要市場データ & 3. 重要ニュース & 4. 主な変化 -->
+        <!-- 2. 主要市場データ & 3. 重要ニュース & 4. 12:00からの主な変化 -->
         <div class="dash-grid-3col">
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">2</span> 主要市場データ</div>
+            <div class="panel-title"><span class="num">2</span> 主要市場データ (16:00確認値)</div>
             <div class="market-grid-dash">
               ${mGridHTML}
             </div>
           </div>
 
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">3</span> 重要ニュース</div>
+            <div class="panel-title"><span class="num">3</span> 主な動向と整合性</div>
             <div class="news-item-dash">
-              <div class="news-head"><span>米国とイランが攻撃を一時停止</span><span class="badge-impact high">非常に大</span></div>
-              <div style="color:#94A3B8;">ホルムズ海峡リスク後退 ➔ 原油急落、株高、債券買い、ドル売り</div>
+              <div class="news-head"><span>第1位：アジア半導体株急落</span><span class="badge-impact high">非常大</span></div>
+              <div style="color:#94A3B8;">韓国サーキットブレーカー、日本の半導体・値がさ株へ売り波及</div>
             </div>
             <div class="news-item-dash">
-              <div class="news-head"><span>イランは米国との交渉を否定</span><span class="badge-impact high">大</span></div>
-              <div style="color:#94A3B8;">正式和平ではなく一時休止の可能性 ➔ 原油・為替の振れ幅拡大</div>
+              <div class="news-head"><span>第2位：AI投資・資金負担懸念</span><span class="badge-impact high">大</span></div>
+              <div style="color:#94A3B8;">巨額投資の持続可能性・キャッシュフロー・回収への懸念</div>
             </div>
             <div class="news-item-dash">
-              <div class="news-head"><span>今週後半: FOMC・日銀・米GAFAM決算</span><span class="badge-impact high">非常に大</span></div>
-              <div style="color:#94A3B8;">イベント前でポジション調整 ➔ 決算が次のトレンドを決定</div>
+              <div class="news-head"><span>第3位：FOMC利上げ警戒</span><span class="badge-impact med">大</span></div>
+              <div style="color:#94A3B8;">利上げ確率上昇 ➔ ドル支援、金・高PER株・BTC上値抑制</div>
             </div>
           </div>
 
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">4</span> 直近の主な変化</div>
+            <div class="panel-title"><span class="num">4</span> 12:00からの変化</div>
             <ul style="font-size:0.8rem; color:#CBD5E1; list-style:none; padding:0;">
-              <li style="margin-bottom:0.4rem;">• <strong>USD/JPY</strong>: 163円台半ば〜後半の狭いレンジで推移</li>
-              <li style="margin-bottom:0.4rem;">• <strong>EUR/USD</strong>: 1.1375付近で揉み合い</li>
-              <li style="margin-bottom:0.4rem;">• <strong>WTI原油</strong>: 83.35ドル前後で低水準横ばい</li>
-              <li>• <strong>総括</strong>: イベント前で方向感の探り合いが継続</li>
+              <li style="margin-bottom:0.4rem;">• <strong>日経先物</strong>: 安値から約280円戻すも、半導体への新規買い入らず</li>
+              <li style="margin-bottom:0.4rem;">• <strong>USD/JPY</strong>: 163.70円台で小幅揉み合い</li>
+              <li style="margin-bottom:0.4rem;">• <strong>WTI原油</strong>: 81.2〜81.4ドルへ下落推移</li>
+              <li>• <strong>総括</strong>: 投げ売り後、短期買い戻しにとどまりテーマ不変</li>
             </ul>
           </div>
         </div>
@@ -174,22 +173,23 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="panel-title"><span class="num">5</span> クロスアセット資金フロー</div>
             <div class="ca-3col-dash">
               <div class="ca-col-dash red">
-                <div class="h">🔻 売られたもの</div>
-                <div>• 原油ロング & エネルギー株</div>
-                <div>• インフレ取引 (債券ショート)</div>
-                <div>• 有事のドルロング / ハイテクショート</div>
+                <div class="h">🔻 資金流出元</div>
+                <div>• 韓国・日本半導体株</div>
+                <div>• AI関連高PER株</div>
+                <div>• BTC等高ベータ資産 / 金 / 原油</div>
+                <div>• 半導体レバレッジポジション</div>
               </div>
               <div class="ca-col-dash green">
-                <div class="h">🟢 買われたもの</div>
-                <div>• 米国債 (金利低下)</div>
-                <div>• ナスダック・半導体株</div>
-                <div>• 航空・運輸・消費株 / 金 / BTC</div>
+                <div class="h">🟢 資金流入先</div>
+                <div>• 現金・米ドル</div>
+                <div>• 一部短期国債</div>
+                <div>• 航空・陸運・小売等原油安メリット株</div>
+                <div>• 通信・医薬品ディフェンシブ株</div>
               </div>
               <div class="ca-col-dash blue">
-                <div class="h">💡 特徴</div>
-                <div>• 原油安でも金上昇 (ドル安効果)</div>
-                <div>• ショートカバー中心の回帰</div>
-                <div>• 新規の強いリスクオンはまだない</div>
+                <div class="h">💡 ローテーション変化</div>
+                <div>• 昨日の「エネルギー➔株・航空・消費」から</div>
+                <div>• 今日は「半導体・AI・BTC➔現金・ドル・ディフェンシブ」へ</div>
               </div>
             </div>
           </div>
@@ -197,49 +197,49 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="dash-panel">
             <div class="panel-title"><span class="num">6</span> 需給・ポジションの状況</div>
             <ul style="font-size:0.8rem; color:#CBD5E1; list-style:none; padding:0;">
-              <li style="margin-bottom:0.35rem;">🛢️ <strong>原油</strong>: 投機ロング手仕舞い進行。82〜83ドル割れで清算加速</li>
-              <li style="margin-bottom:0.35rem;">🏛️ <strong>米金利</strong>: 原油安で低下も、FOMC前で上昇リスク残存</li>
-              <li style="margin-bottom:0.35rem;">💴 <strong>為替</strong>: ドルロング解消進むも、163円台半ばで実需ドル買い下支え</li>
-              <li style="margin-bottom:0.35rem;">💻 <strong>株式</strong>: ハイテク・半導体買い戻し。新規買いは出来高次第</li>
-              <li style="margin-bottom:0.35rem;">🥇 <strong>金</strong>: 実質金利低下とドル安で買い優勢。4,100ドル台推移</li>
-              <li>₿ <strong>BTC</strong>: 64,000〜65,000ドル台回復もETF資金流出への警戒残る</li>
+              <li style="margin-bottom:0.35rem;">🏯 <strong>日経先物</strong>: 海外勢売り・現物売り・CTA売り・レバレッジ縮小が重なる</li>
+              <li style="margin-bottom:0.35rem;">💴 <strong>為替</strong>: 米利上げ警戒と円キャリー縮小・買い戻しが拮抗</li>
+              <li style="margin-bottom:0.35rem;">💶 <strong>ユーロ</strong>: ドル高重しも原油安による交易条件改善が下支え</li>
+              <li style="margin-bottom:0.35rem;">🥇 <strong>金</strong>: ドル高でロング利確優勢</li>
+              <li style="margin-bottom:0.35rem;">🛢️ <strong>原油</strong>: プレミアム剥落・短期ロング清算継続</li>
+              <li>₿ <strong>BTC</strong>: アジア株・半導体株とともにリスク縮小の影響</li>
             </ul>
           </div>
         </div>
 
         <!-- 7. 6市場の見通し -->
         <div class="dash-panel" style="margin-bottom:0.85rem;">
-          <div class="panel-title"><span class="num">7</span> 6市場の見通し (売買判断・注目材料・重要水準)</div>
+          <div class="panel-title"><span class="num">7</span> 6市場の見通し (売買判断・重要水準)</div>
           <div class="market6-grid-dash">
             <div class="m6-card">
-              <div class="m6-head"><span>🥇 金 (Gold)</span><span class="stance bull">やや強気</span></div>
-              <div><strong>ターゲット:</strong> 4,080〜4,120ドル</div>
-              <div><strong>支持:</strong> 4,050 / <strong>抵抗:</strong> 4,100</div>
+              <div class="m6-head"><span>🥇 金 (Gold)</span><span class="stance bear">中立〜やや弱気</span></div>
+              <div><strong>ターゲット:</strong> 4,040〜4,075ドル</div>
+              <div><strong>支持:</strong> 4,040 / <strong>抵抗:</strong> 4,075</div>
             </div>
             <div class="m6-card">
-              <div class="m6-head"><span>🛢️ WTI原油</span><span class="stance bear">弱気</span></div>
-              <div><strong>ターゲット:</strong> 82.00〜84.00ドル</div>
-              <div><strong>支持:</strong> 82 / <strong>抵抗:</strong> 85</div>
+              <div class="m6-head"><span>🛢️ WTI原油</span><span class="stance bear">弱気継続</span></div>
+              <div><strong>ターゲット:</strong> 81.2〜82.6ドル</div>
+              <div><strong>支持:</strong> 81.0 / <strong>抵抗:</strong> 82.6</div>
             </div>
             <div class="m6-card">
-              <div class="m6-head"><span>🇯🇵 日経225先物</span><span class="stance neu">中立〜やや強気</span></div>
-              <div><strong>ターゲット:</strong> 65,000〜65,500円</div>
-              <div><strong>支持:</strong> 64,800 / <strong>抵抗:</strong> 65,500</div>
+              <div class="m6-head"><span>🇯🇵 日経225先物</span><span class="stance bear">弱気 (短期戻し注意)</span></div>
+              <div><strong>ターゲット:</strong> 62,000〜63,000円</div>
+              <div><strong>支持:</strong> 62,000 / <strong>抵抗:</strong> 63,000</div>
             </div>
             <div class="m6-card">
               <div class="m6-head"><span>💴 USD/JPY</span><span class="stance neu">中立</span></div>
-              <div><strong>ターゲット:</strong> 163.20〜164.00円</div>
-              <div><strong>支持:</strong> 163.00 / <strong>抵抗:</strong> 164.20</div>
+              <div><strong>ターゲット:</strong> 163.65〜164.00円</div>
+              <div><strong>支持:</strong> 163.65 / <strong>抵抗:</strong> 164.00</div>
             </div>
             <div class="m6-card">
-              <div class="m6-head"><span>💶 EUR/USD</span><span class="stance neu">中立</span></div>
-              <div><strong>ターゲット:</strong> 1.1350〜1.1420</div>
-              <div><strong>支持:</strong> 1.1320 / <strong>抵抗:</strong> 1.1420</div>
+              <div class="m6-head"><span>💶 EUR/USD</span><span class="stance bear">中立〜やや弱気</span></div>
+              <div><strong>ターゲット:</strong> 1.1360〜1.1380</div>
+              <div><strong>支持:</strong> 1.1360 / <strong>抵抗:</strong> 1.1380</div>
             </div>
             <div class="m6-card">
-              <div class="m6-head"><span>₿ BTCUSD</span><span class="stance neu">中立</span></div>
-              <div><strong>ターゲット:</strong> 64,000〜65,500ドル</div>
-              <div><strong>支持:</strong> 63,800 / <strong>抵抗:</strong> 66,000</div>
+              <div class="m6-head"><span>₿ BTCUSD</span><span class="stance bear">弱気〜中立</span></div>
+              <div><strong>ターゲット:</strong> 参考1,034万円(日中-3%)</div>
+              <div><strong>支持:</strong> 1,000万 / <strong>抵抗:</strong> 1,050万</div>
             </div>
           </div>
         </div>
@@ -247,59 +247,57 @@ document.addEventListener('DOMContentLoaded', () => {
         <!-- 8. メインシナリオ & 9. 代替シナリオ & 10. シナリオが崩れる条件 -->
         <div class="dash-grid-3col">
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">8</span> メインシナリオ (確率: 50%)</div>
+            <div class="panel-title"><span class="num">8</span> 全体メインシナリオ</div>
             <div style="font-size:0.8rem; color:#CBD5E1;">
-              攻撃停止維持、原油安継続。米金利低下基調でハイテク株買い戻し続く。日経先物は65,000円台を維持。<br>
-              <div style="margin-top:0.4rem; padding:0.4rem; background:rgba(255,255,255,0.05); border-radius:4px; text-align:center; color:#60A5FA;">
-                原油↓ 金利↓ 株↑ ドル↓ 金↑ BTC↑
+              NY市場でアジアの半導体急落を受けてハイテク・AI株に売り先行。寄り付き後はポジション調整で短期買い戻し。<br>
+              <div style="margin-top:0.4rem; padding:0.4rem; background:rgba(255,255,255,0.05); border-radius:4px; text-align:center; color:#FCA5A5;">
+                半導体売り➔Nasdaq下落➔日経先物抑制➔BTC下落➔円キャリー解消➔ドル円抑制
               </div>
             </div>
           </div>
 
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">9</span> 代替シナリオ</div>
+            <div class="panel-title"><span class="num">9</span> 代替シナリオ (3パターン)</div>
             <ul style="font-size:0.78rem; color:#CBD5E1; list-style:none; padding:0;">
-              <li style="margin-bottom:0.3rem;">1️⃣ <strong>中東情勢再燃 (25%)</strong>: 攻撃再開 ➔ 原油急高・金利上昇・株安</li>
-              <li style="margin-bottom:0.3rem;">2️⃣ <strong>FOMC後リスクオン (15%)</strong>: パウエルハト派 ➔ 株高加速</li>
-              <li>3️⃣ <strong>日銀利上げ警戒 (10%)</strong>: 政策変更観測 ➔ 円高・株調整</li>
+              <li style="margin-bottom:0.3rem;">1️⃣ <strong>半導体自律反発</strong>: Nvidia/SOX反発 ➔ 日経先物63,000〜63,500円</li>
+              <li style="margin-bottom:0.3rem;">2️⃣ <strong>世界的位置解消</strong>: 米半導体続落 ➔ 日経先物62,000円割れ</li>
+              <li>3️⃣ <strong>中東緊張再燃</strong>: 協議決裂 ➔ 原油・金・金利高、株下落</li>
             </ul>
           </div>
 
           <div class="dash-panel">
             <div class="panel-title"><span class="num">10</span> シナリオが崩れる条件 (要警戒)</div>
             <ul style="font-size:0.78rem; color:#FCA5A5; list-style:none; padding:0;">
-              <li style="margin-bottom:0.25rem;">• WTIが86ドルを超えて急反発</li>
-              <li style="margin-bottom:0.25rem;">• 米10年債利回りが4.72%を突破</li>
-              <li style="margin-bottom:0.25rem;">• 日経225先物が64,800円以下へ下落</li>
-              <li style="margin-bottom:0.25rem;">• USD/JPYが164.20円突破</li>
-              <li>• 金が4,050ドル割れ / BTCが63,800ドル割れ</li>
+              <li style="margin-bottom:0.25rem;">• 【弱気修正】日経先物63,500円回復、SOX/Nvidiaプラ転</li>
+              <li style="margin-bottom:0.25rem;">• 【弱気修正】米10年債4.60%割れ、EUR/USD 1.1420上抜け</li>
+              <li style="margin-bottom:0.25rem;">• 【弱気強化】日経先物62,000円明確割れ、Nvidia/SOX続落</li>
+              <li>• 【弱気強化】USD/JPY 163円割れ、VIX急上昇</li>
             </ul>
           </div>
         </div>
 
-        <!-- 11. 注目ポイント & 12. 海外投資家・需給 & 13. 結論 -->
+        <!-- 11. 注目ポイント & 12. 引き継ぎ & 13. 結論 -->
         <div class="dash-grid-3col">
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">11</span> 注目ポイント</div>
+            <div class="panel-title"><span class="num">11</span> 今後のイベント</div>
             <div style="font-size:0.78rem; color:#CBD5E1;">
-              <strong>今夜:</strong> 米・消費者信頼感指数 / 米GAFAM決算発表<br>
-              <strong>明日〜今週:</strong> FOMC声明・パウエル会見 / 日銀金融政策決定会合
+              <strong>今夜NY:</strong> 米消費者信頼感、FOMC初日、米大型企業決算<br>
+              <strong>今週:</strong> FOMC金利発表、米GDP、GAFAM決算、日銀決定会合
             </div>
           </div>
 
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">12</span> 海外投資家・需給フロー</div>
+            <div class="panel-title"><span class="num">12</span> NY時間への引き継ぎ</div>
             <div style="font-size:0.78rem; color:#CBD5E1;">
-              • <strong>日本株</strong>: 海外勢の先物買い越し継続も慎重姿勢<br>
-              • <strong>米国株</strong>: ハイテク大型株へ資金再流入<br>
-              • <strong>為替(CFTC)</strong>: ドルロング解消一巡
+              • Nvidia・SOX・Nasdaqの寄り付き動向<br>
+              • 最重要: アジアの半導体投げ売りが米国半導体株へ連鎖するか、NY勢が押し目買いするか
             </div>
           </div>
 
           <div class="dash-panel" style="background:linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.9) 100%); border-color:var(--accent-purple);">
             <div class="panel-title" style="background:var(--accent-purple); color:#FFF;"><span class="num" style="background:#FFF; color:#A855F7;">13</span> 結論</div>
             <div style="font-size:0.78rem; color:#FFF; line-height:1.5;">
-              原油急落によるスタグフレーション懸念の後退が相場の下支え要因です。今夜の米GAFAM決算と明日以降のFOMC・日銀政策決定会合を見極める展開が続きます。
+              本日の相場を動かしているのは原油ではなく、AI投資の持続可能性・半導体レバレッジ解消・FOMC利上げ警戒。今夜の最大判断軸は「原油安を好感できるか」ではなく「半導体株の売りを吸収できるか」である。
             </div>
           </div>
         </div>
@@ -311,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalFullText.innerHTML = `
       <div class="tab-nav">
         <button class="tab-btn active" data-tab="tab-dash">📊 全13パネル インフォグラフィック・ダッシュボード</button>
-        <button class="tab-btn" data-tab="tab-text">📝 詳細全文テキスト</button>
+        <button class="tab-btn" data-tab="tab-text">📝 詳細全文テキスト (全16セクション完全版)</button>
       </div>
 
       <div id="tab-dash" class="tab-pane active">
@@ -344,42 +342,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderMarkdown(md) {
     if (!md) return '';
     let html = md;
-
-    const crossAssetGridHTML = `
-      <div class="cross-asset-grid-3col">
-        <div class="ca-card-red">
-          <div class="ca-title">🔻 売られたもの・縮小されたポジション</div>
-          <ul class="ca-list">
-            <li>原油ロング・エネルギー株</li>
-            <li>インフレ取引 (債券ショート・コモディティ)</li>
-            <li>有事のドルロング</li>
-            <li>ハイテク株ショート</li>
-            <li>米国債ショート</li>
-          </ul>
-        </div>
-        <div class="ca-card-green">
-          <div class="ca-title">🟢 買われたもの・拡大されたポジション</div>
-          <ul class="ca-list">
-            <li>米国債 (金利低下)</li>
-            <li>ナスダック・半導体・ハイテク株</li>
-            <li>航空・運輸・消費関連株</li>
-            <li>金 (Gold)</li>
-            <li>ユーロ・スイスフラン</li>
-            <li>BTC (リスク資産)</li>
-          </ul>
-        </div>
-        <div class="ca-card-blue">
-          <div class="ca-title">💡 資金の動きの特徴</div>
-          <ul class="ca-list">
-            <li>原油安でも金が上昇 (インフレ懸念後退＋米金利低下＋ドル安のW効果)</li>
-            <li>リスクオフからリスクオンへの回帰はショートカバー中心</li>
-            <li>新規の強いリスクオンはまだ入っていない</li>
-          </ul>
-        </div>
-      </div>
-    `;
-
-    html = html.replace(/### 5．クロスアセット資金フロー[\s\S]*?(?=### 6．)/g, '### 5．クロスアセット資金フロー (先週から今日への変化)\n\n' + crossAssetGridHTML + '\n\n');
 
     html = html.replace(/^# (.*$)/gim, '<h1 style="color:#FFF; font-size:1.6rem; font-weight:800; border-bottom:2px solid var(--accent-purple); padding-bottom:0.5rem; margin:1.5rem 0 1rem 0;">$1</h1>');
     html = html.replace(/^### (.*$)/gim, '<h3 style="color:#60A5FA; font-size:1.2rem; font-weight:700; margin:1.5rem 0 0.8rem 0; padding-left:0.5rem; border-left:4px solid #3B82F6;">$1</h3>');
