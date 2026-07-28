@@ -103,7 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 完璧な日本語HTMLダッシュボード（画像不要）
+    // 動的な市場データグリッド生成
+    let mGridHTML = '';
+    if (report.marketData && Array.isArray(report.marketData)) {
+      report.marketData.forEach(item => {
+        const cls = item.status === 'down' ? 'down' : 'up';
+        mGridHTML += `<div class="market-item-dash"><span>${escapeHTML(item.name)}</span><span class="val ${cls}">${escapeHTML(item.close)} (${escapeHTML(item.pct)})</span></div>`;
+      });
+    }
+
+    // 完璧な動的日本語HTMLダッシュボード
     const dashboardHTML = `
       <div class="dashboard-container">
         <div class="dashboard-header">
@@ -115,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="dash-panel" style="margin-bottom:0.85rem;">
           <div class="panel-title"><span class="num">1</span> 今日の相場テーマ</div>
           <div class="theme-box">
-            <div class="theme-title">${escapeHTML(report.theme || '中東リスク緩和による「スタグフレーション取引の巻き戻し」')}</div>
+            <div class="theme-title">≫ ${escapeHTML(report.theme || '中東リスク緩和による「スタグフレーション取引の巻き戻し」')}</div>
             <div class="theme-flow">
               攻撃停止 ➔ 原油急落 ➔ インフレ懸念後退 ➔ 米金利低下期待 ➔ 株高（特にハイテク）・金上昇・ドル売りの流れ<br>
               <span style="color:#94A3B8; font-size:0.8rem;">（※上昇は新規リスクオンではなく、ショートカバーやポジション調整が中心。FOMC・大型決算・日銀会合前で上値追いは限定的。）</span>
@@ -123,19 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
 
-        <!-- 2. 主要市場データ & 3. 重要ニュース & 4. 16:00からの主な変化 -->
+        <!-- 2. 主要市場データ & 3. 重要ニュース & 4. 主な変化 -->
         <div class="dash-grid-3col">
           <div class="dash-panel">
             <div class="panel-title"><span class="num">2</span> 主要市場データ</div>
             <div class="market-grid-dash">
-              <div class="market-item-dash"><span>🇯🇵 日経225(現物)</span><span class="val up">64,931.19 (+0.50%)</span></div>
-              <div class="market-item-dash"><span>🏯 日経225先物(大阪)</span><span class="val up">65,230 (+60)</span></div>
-              <div class="market-item-dash"><span>💵 USD/JPY</span><span class="val down">163.50円</span></div>
-              <div class="market-item-dash"><span>💶 EUR/USD</span><span class="val up">1.1400近辺</span></div>
-              <div class="market-item-dash"><span>🛢️ WTI原油</span><span class="val down">82ドル台</span></div>
-              <div class="market-item-dash"><span>🥇 金先物(COMEX)</span><span class="val up">4,103.05ドル (+0.79%)</span></div>
-              <div class="market-item-dash"><span>₿ BTCUSD</span><span class="val up">65,263.4ドル (+1.13%)</span></div>
-              <div class="market-item-dash"><span>🏛️ 米10年債利回り</span><span class="val down">4.64%台</span></div>
+              ${mGridHTML}
             </div>
           </div>
 
@@ -150,18 +152,18 @@ document.addEventListener('DOMContentLoaded', () => {
               <div style="color:#94A3B8;">正式和平ではなく一時休止の可能性 ➔ 原油・為替の振れ幅拡大</div>
             </div>
             <div class="news-item-dash">
-              <div class="news-head"><span>フーシ派がサウジ石油施設を攻撃</span><span class="badge-impact med">中</span></div>
-              <div style="color:#94A3B8;">紅海リスクは残存 ➔ 原油が一方向には下がりにくい要因</div>
+              <div class="news-head"><span>今週後半: FOMC・日銀・米GAFAM決算</span><span class="badge-impact high">非常に大</span></div>
+              <div style="color:#94A3B8;">イベント前でポジション調整 ➔ 決算が次のトレンドを決定</div>
             </div>
           </div>
 
           <div class="dash-panel">
-            <div class="panel-title"><span class="num">4</span> 前回からの主な変化</div>
+            <div class="panel-title"><span class="num">4</span> 直近の主な変化</div>
             <ul style="font-size:0.8rem; color:#CBD5E1; list-style:none; padding:0;">
-              <li style="margin-bottom:0.4rem;">• <strong>USD/JPY</strong>: 16時台に163.36円台まで下落後、ドル売り一服で163円台半ばへ戻す</li>
-              <li style="margin-bottom:0.4rem;">• <strong>EUR/USD</strong>: 16時台に1.1418まで上昇後、1.1400付近へ反落</li>
-              <li style="margin-bottom:0.4rem;">• <strong>WTI原油</strong>: 17時台に84ドル台へ一時下げ渋り後、20時台は82ドル台まで下落拡大</li>
-              <li>• <strong>総括</strong>: ドル、ユーロ、日経先物は方向感の分岐点で推移</li>
+              <li style="margin-bottom:0.4rem;">• <strong>USD/JPY</strong>: 163円台半ば〜後半の狭いレンジで推移</li>
+              <li style="margin-bottom:0.4rem;">• <strong>EUR/USD</strong>: 1.1375付近で揉み合い</li>
+              <li style="margin-bottom:0.4rem;">• <strong>WTI原油</strong>: 83.35ドル前後で低水準横ばい</li>
+              <li>• <strong>総括</strong>: イベント前で方向感の探り合いが継続</li>
             </ul>
           </div>
         </div>
@@ -173,17 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="ca-3col-dash">
               <div class="ca-col-dash red">
                 <div class="h">🔻 売られたもの</div>
-                <div>• 原油・エネルギー株</div>
+                <div>• 原油ロング & エネルギー株</div>
                 <div>• インフレ取引 (債券ショート)</div>
-                <div>• 有事のドルロング</div>
-                <div>• ハイテク株ショート</div>
+                <div>• 有事のドルロング / ハイテクショート</div>
               </div>
               <div class="ca-col-dash green">
                 <div class="h">🟢 買われたもの</div>
                 <div>• 米国債 (金利低下)</div>
                 <div>• ナスダック・半導体株</div>
-                <div>• 航空・運輸・消費株</div>
-                <div>• 金 (Gold) / ユーロ / BTC</div>
+                <div>• 航空・運輸・消費株 / 金 / BTC</div>
               </div>
               <div class="ca-col-dash blue">
                 <div class="h">💡 特徴</div>
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <li style="margin-bottom:0.35rem;">💴 <strong>為替</strong>: ドルロング解消進むも、163円台半ばで実需ドル買い下支え</li>
               <li style="margin-bottom:0.35rem;">💻 <strong>株式</strong>: ハイテク・半導体買い戻し。新規買いは出来高次第</li>
               <li style="margin-bottom:0.35rem;">🥇 <strong>金</strong>: 実質金利低下とドル安で買い優勢。4,100ドル台推移</li>
-              <li>₿ <strong>BTC</strong>: 65,000ドル台回復もETF資金流出への警戒残る</li>
+              <li>₿ <strong>BTC</strong>: 64,000〜65,000ドル台回復もETF資金流出への警戒残る</li>
             </ul>
           </div>
         </div>
@@ -213,33 +213,33 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="market6-grid-dash">
             <div class="m6-card">
               <div class="m6-head"><span>🥇 金 (Gold)</span><span class="stance bull">やや強気</span></div>
-              <div><strong>ターゲット:</strong> 4,115〜4,150ドル</div>
-              <div><strong>支持:</strong> 4,085 / <strong>抵抗:</strong> 4,120</div>
+              <div><strong>ターゲット:</strong> 4,080〜4,120ドル</div>
+              <div><strong>支持:</strong> 4,050 / <strong>抵抗:</strong> 4,100</div>
             </div>
             <div class="m6-card">
               <div class="m6-head"><span>🛢️ WTI原油</span><span class="stance bear">弱気</span></div>
-              <div><strong>ターゲット:</strong> 82.00ドル台</div>
+              <div><strong>ターゲット:</strong> 82.00〜84.00ドル</div>
               <div><strong>支持:</strong> 82 / <strong>抵抗:</strong> 85</div>
             </div>
             <div class="m6-card">
               <div class="m6-head"><span>🇯🇵 日経225先物</span><span class="stance neu">中立〜やや強気</span></div>
-              <div><strong>ターゲット:</strong> 65,400〜65,800円</div>
-              <div><strong>支持:</strong> 65,000 / <strong>抵抗:</strong> 65,400</div>
+              <div><strong>ターゲット:</strong> 65,000〜65,500円</div>
+              <div><strong>支持:</strong> 64,800 / <strong>抵抗:</strong> 65,500</div>
             </div>
             <div class="m6-card">
               <div class="m6-head"><span>💴 USD/JPY</span><span class="stance neu">中立</span></div>
-              <div><strong>ターゲット:</strong> 163.50〜164.00円</div>
-              <div><strong>支持:</strong> 163.30 / <strong>抵抗:</strong> 164.00</div>
+              <div><strong>ターゲット:</strong> 163.20〜164.00円</div>
+              <div><strong>支持:</strong> 163.00 / <strong>抵抗:</strong> 164.20</div>
             </div>
             <div class="m6-card">
-              <div class="m6-head"><span>💶 EUR/USD</span><span class="stance neu">中立〜やや強気</span></div>
-              <div><strong>ターゲット:</strong> 1.1418〜1.1450</div>
-              <div><strong>支持:</strong> 1.1380 / <strong>抵抗:</strong> 1.1418</div>
+              <div class="m6-head"><span>💶 EUR/USD</span><span class="stance neu">中立</span></div>
+              <div><strong>ターゲット:</strong> 1.1350〜1.1420</div>
+              <div><strong>支持:</strong> 1.1320 / <strong>抵抗:</strong> 1.1420</div>
             </div>
             <div class="m6-card">
-              <div class="m6-head"><span>₿ BTCUSD</span><span class="stance bull">やや強気</span></div>
-              <div><strong>ターゲット:</strong> 65,700〜66,500ドル</div>
-              <div><strong>支持:</strong> 65,000 / <strong>抵抗:</strong> 65,700</div>
+              <div class="m6-head"><span>₿ BTCUSD</span><span class="stance neu">中立</span></div>
+              <div><strong>ターゲット:</strong> 64,000〜65,500ドル</div>
+              <div><strong>支持:</strong> 63,800 / <strong>抵抗:</strong> 66,000</div>
             </div>
           </div>
         </div>
@@ -259,20 +259,20 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="dash-panel">
             <div class="panel-title"><span class="num">9</span> 代替シナリオ</div>
             <ul style="font-size:0.78rem; color:#CBD5E1; list-style:none; padding:0;">
-              <li style="margin-bottom:0.3rem;">1️⃣ <strong>中東緊張再燃 (25%)</strong>: 攻撃再開 ➔ 原油急高・金利上昇・株安・ドル高</li>
-              <li style="margin-bottom:0.3rem;">2️⃣ <strong>本格的リスクオン (15%)</strong>: 原油82ドル割れ・金利4.60%割れ ➔ 株高加速</li>
-              <li>3️⃣ <strong>金利反発シナリオ (10%)</strong>: 経済指標や関税で金利反発 ➔ ドル買い戻し</li>
+              <li style="margin-bottom:0.3rem;">1️⃣ <strong>中東情勢再燃 (25%)</strong>: 攻撃再開 ➔ 原油急高・金利上昇・株安</li>
+              <li style="margin-bottom:0.3rem;">2️⃣ <strong>FOMC後リスクオン (15%)</strong>: パウエルハト派 ➔ 株高加速</li>
+              <li>3️⃣ <strong>日銀利上げ警戒 (10%)</strong>: 政策変更観測 ➔ 円高・株調整</li>
             </ul>
           </div>
 
           <div class="dash-panel">
             <div class="panel-title"><span class="num">10</span> シナリオが崩れる条件 (要警戒)</div>
             <ul style="font-size:0.78rem; color:#FCA5A5; list-style:none; padding:0;">
-              <li style="margin-bottom:0.25rem;">• WTIが85ドルを即回復、または石油施設攻撃激化</li>
-              <li style="margin-bottom:0.25rem;">• 米10年債利回りが4.70%を突破</li>
-              <li style="margin-bottom:0.25rem;">• 日経225先物が65,000円を割り64,800円以下へ下落</li>
-              <li style="margin-bottom:0.25rem;">• USD/JPYが164.00円を突破 / EUR/USD 1.1380割れ</li>
-              <li>• 金が4,085ドル割れ / BTCが64,000ドル割れ</li>
+              <li style="margin-bottom:0.25rem;">• WTIが86ドルを超えて急反発</li>
+              <li style="margin-bottom:0.25rem;">• 米10年債利回りが4.72%を突破</li>
+              <li style="margin-bottom:0.25rem;">• 日経225先物が64,800円以下へ下落</li>
+              <li style="margin-bottom:0.25rem;">• USD/JPYが164.20円突破</li>
+              <li>• 金が4,050ドル割れ / BTCが63,800ドル割れ</li>
             </ul>
           </div>
         </div>
@@ -282,24 +282,24 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="dash-panel">
             <div class="panel-title"><span class="num">11</span> 注目ポイント</div>
             <div style="font-size:0.78rem; color:#CBD5E1;">
-              <strong>今夜:</strong> 21:30 米・耐久財受注速報値 / 米株ハイテク反応 / 米10年債利回り<br>
-              <strong>翌東京時間:</strong> 日経先物65,000円維持か / 半導体出来高 / 日銀会合前の動き
+              <strong>今夜:</strong> 米・消費者信頼感指数 / 米GAFAM決算発表<br>
+              <strong>明日〜今週:</strong> FOMC声明・パウエル会見 / 日銀金融政策決定会合
             </div>
           </div>
 
           <div class="dash-panel">
             <div class="panel-title"><span class="num">12</span> 海外投資家・需給フロー</div>
             <div style="font-size:0.78rem; color:#CBD5E1;">
-              • <strong>日本株</strong>: 先物買い越し継続も上値追いは慎重<br>
-              • <strong>米国株</strong>: 原油安でエネルギーから他セクターへ資金シフト<br>
-              • <strong>為替(CFTC)</strong>: ドルロング解消進行中
+              • <strong>日本株</strong>: 海外勢の先物買い越し継続も慎重姿勢<br>
+              • <strong>米国株</strong>: ハイテク大型株へ資金再流入<br>
+              • <strong>為替(CFTC)</strong>: ドルロング解消一巡
             </div>
           </div>
 
           <div class="dash-panel" style="background:linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.9) 100%); border-color:var(--accent-purple);">
             <div class="panel-title" style="background:var(--accent-purple); color:#FFF;"><span class="num" style="background:#FFF; color:#A855F7;">13</span> 結論</div>
             <div style="font-size:0.78rem; color:#FFF; line-height:1.5;">
-              今日の相場は原油急落を起点にしたポジション調整が中心。現時点ではリスクオン回帰の入り口にありますが、継続には米株（特にハイテク）の強さと金利の安定が不可欠。今夜の米市場の反応が翌東京時間の方向性を決定します。
+              原油急落によるスタグフレーション懸念の後退が相場の下支え要因です。今夜の米GAFAM決算と明日以降のFOMC・日銀政策決定会合を見極める展開が続きます。
             </div>
           </div>
         </div>
@@ -314,12 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <button class="tab-btn" data-tab="tab-text">📝 詳細全文テキスト</button>
       </div>
 
-      <!-- タブ1: 全13パネル インフォグラフィック・ダッシュボード -->
       <div id="tab-dash" class="tab-pane active">
         ${dashboardHTML}
       </div>
 
-      <!-- タブ2: 詳細全文テキスト -->
       <div id="tab-text" class="tab-pane" style="line-height: 1.8; color: #E2E8F0; padding: 1rem 0;">
         ${renderedHTML}
       </div>
