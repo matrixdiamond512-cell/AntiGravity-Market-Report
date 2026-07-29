@@ -2,14 +2,14 @@ name: Auto Market Report Generator
 
 on:
   schedule:
-    # JST 07:00 (UTC 22:05 prev day)
-    - cron: '5 22 * * *'
-    # JST 12:00 (UTC 03:05)
-    - cron: '5 3 * * *'
-    # JST 16:00 (UTC 07:05)
-    - cron: '5 7 * * *'
-    # JST 21:00 (UTC 12:05)
-    - cron: '5 12 * * *'
+    # JST 07:05 (UTC 22:05 prev day) - 混雑回避のため12分オフセット
+    - cron: '12 22 * * *'
+    # JST 12:05 (UTC 03:05)
+    - cron: '12 3 * * *'
+    # JST 16:05 (UTC 07:05)
+    - cron: '12 7 * * *'
+    # JST 21:05 (UTC 12:05)
+    - cron: '12 12 * * *'
   workflow_dispatch:
 
 jobs:
@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,14 +32,15 @@ jobs:
       - name: Run Update Script
         run: python scripts/update_report.py
 
-      - name: Commit and Push Changes
+      - name: Commit and Push Changes Safely
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add reports.json
+          git add .
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Auto update market report via GitHub Actions [skip ci]"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
